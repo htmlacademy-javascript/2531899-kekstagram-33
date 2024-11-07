@@ -1,8 +1,7 @@
 function checkStringLength (string, maxLength) {
   return string.length <= maxLength;
 }
-
-console.log('Less than max?', checkStringLength('kmknupn', 4));
+checkStringLength('kmknupn', 4);
 
 function isPalindrome (string) {
   string = string.replaceAll(' ', '');
@@ -15,7 +14,7 @@ function isPalindrome (string) {
 
   return reverseString === string;
 }
-console.log('Palindrome?', isPalindrome('Лёша на полке клопа нашёл'));
+isPalindrome('Лёша на полке клопа нашёл');
 
 function findNumbers (string) {
   let numbersString = '';
@@ -31,4 +30,4 @@ function findNumbers (string) {
 
   return parseInt(numbersString, 10);
 }
-console.log('numbers', findNumbers('агент -0.07'));
+findNumbers('агент -0.07');
