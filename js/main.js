@@ -1,2 +1,2 @@
-import './createMiniatures.js';
-import './renderFullPhoto.js';
+import './renderPhotos.js';
+import './renderComments.js';

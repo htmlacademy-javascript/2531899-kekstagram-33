@@ -40,7 +40,6 @@ const NAMES = [
   'Вашингтон',
 ];
 
-
 const getPhotoId = createIdGenerator(OBJECT_COUNT);
 const getPhotoUrlId = createIdGenerator(OBJECT_COUNT);
 const getCommentId = createIdGenerator(1000);
