@@ -1,4 +1,5 @@
 import { sliderContainer, imagePreview } from './changeEffects';
+import { sendData } from './serverData';
 
 const uploadPhotoInput = document.querySelector('.img-upload__input');
 const uploadPhotoOverlay = document.querySelector('.img-upload__overlay');
@@ -81,9 +82,67 @@ function validateDescription(value) {
 pristine.addValidator(hashtagField, validateHashtags, () => errorMessage);
 pristine.addValidator(descriptionField, validateDescription, `Максимальное количество символов - ${MAX_DESCRIPTION_LENGTH}`);
 
-uploadPhotoForm.addEventListener('submit', (evt) => {
-  evt.preventDefault();
-  if (pristine.validate() === true) {
-    uploadPhotoForm.submit();
+const SubmitButtonText = {
+  IDLE: 'Опубликовать',
+  SENDING: 'Публикую...',
+};
+
+const templateSuccess = document.querySelector('#success').content;
+const templateError = document.querySelector('#error').content;
+
+function disabledButton(text) {
+  uploadSubmitButton.disabled = true;
+  uploadSubmitButton.textContent = text;
+}
+
+function enableButton(text) {
+  uploadSubmitButton.disabled = false;
+  uploadSubmitButton.textContent = text;
+}
+
+function closeNotification(evt) {
+  evt.stopPropagation();
+  const existElement = document.querySelector('.success') || document.querySelector('.error');
+  const closeButton = existElement.querySelector('button');
+  if(evt.target === existElement || evt.target === closeButton || evt.key === 'Escape') {
+    existElement.remove();
+    document.body.removeEventListener('click', closeNotification);
+    document.body.removeEventListener('keydown', closeNotification);
   }
-});
+}
+
+function appendNotification(template, trigger = null) {
+  trigger?.();
+  const notificationNode = template.cloneNode(true);
+  document.body.append(notificationNode);
+  document.body.addEventListener('click', closeNotification);
+  document.body.addEventListener('keydown', closeNotification);
+}
+
+async function sendFormData(formElement) {
+  if (pristine.validate() === true) {
+    disabledButton(SubmitButtonText.SENDING);
+
+    try {
+      await sendData(new FormData(formElement));
+      appendNotification(templateSuccess, () => {
+        uploadPhotoOverlay.classList.add('hidden');
+        document.body.classList.remove('modal-open');
+        uploadPhotoInput.value = '';
+        sliderContainer.style.display = 'none';
+        imagePreview.style.filter = '';
+      });
+    } catch (error) {
+      appendNotification(templateError);
+    } finally {
+      enableButton(SubmitButtonText.IDLE);
+    }
+  }
+}
+
+function formSubmitHandler(evt) {
+  evt.preventDefault();
+  sendFormData(evt.target);
+}
+
+uploadPhotoForm.addEventListener('submit', formSubmitHandler);

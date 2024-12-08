@@ -1,5 +1,3 @@
-import { createCommentsList } from './data.js';
-
 const COMMENTS_STEP = 5;
 const fullPictureWindow = document.querySelector('.big-picture');
 const commentSection = fullPictureWindow.querySelector('.social__comments');
@@ -7,9 +5,7 @@ const loadButton = fullPictureWindow.querySelector('.comments-loader');
 const shownComments = fullPictureWindow.querySelector('.social__comment-shown-count');
 const totalComments = fullPictureWindow.querySelector('.social__comment-total-count');
 
-function createNewComment() {
-  const commentInfo = createCommentsList();
-
+function createNewComment(commentInfo) {
   const newComment = document.createElement('li');
   newComment.classList.add('social__comment');
 
@@ -29,15 +25,14 @@ function createNewComment() {
   return newComment;
 }
 
-function renderComments() {
+function renderComments(comments) {
   commentSection.innerHTML = '';
 
   const photoComments = [];
-  for(let i = 0; i < totalComments.textContent; i++) {
-    photoComments[i] = createNewComment();
+  for(let i = 0; i < comments.length; i++) {
+    photoComments[i] = createNewComment(comments[i]);
   }
 
-  const currentComments = photoComments.length;
   let commentsCount = 0;
   loadComments();
 
@@ -45,21 +40,22 @@ function renderComments() {
     loadComments();
   });
 
+  totalComments.textContent = comments.length;
+
   function loadComments() {
     let i = commentsCount;
     commentsCount += COMMENTS_STEP;
 
-    if (commentsCount > currentComments) {
-      commentsCount = currentComments;
+    if (commentsCount > comments.length) {
+      commentsCount = comments.length;
     }
     shownComments.textContent = commentsCount;
-    totalComments.textContent = currentComments;
 
     for (; i < commentsCount; i++) {
       commentSection.append(photoComments[i]);
     }
 
-    if (commentsCount >= currentComments) {
+    if (commentsCount >= comments.length) {
       loadButton.classList.add('hidden');
     } else {
       loadButton.classList.remove('hidden');
