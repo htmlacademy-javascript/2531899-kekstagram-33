@@ -40,6 +40,63 @@ const NAMES = [
   'Вашингтон',
 ];
 
+const EFFECTS = [
+  {
+    name: 'none',
+    querySelector: document.querySelector('#effect-none'),
+    filter: 'none',
+    min: 0,
+    max: 100,
+    step: 1,
+    unit: '',
+  },
+  {
+    name: 'chrome',
+    querySelector: document.querySelector('#effect-chrome'),
+    filter: 'grayscale',
+    min: 0,
+    max: 1,
+    step: 0.1,
+    unit: '',
+  },
+  {
+    name: 'sepia',
+    querySelector: document.querySelector('#effect-sepia'),
+    filter: 'sepia',
+    min: 0,
+    max: 1,
+    step: 0.1,
+    unit: '',
+  },
+  {
+    name: 'marvin',
+    querySelector: document.querySelector('#effect-marvin'),
+    filter: 'invert',
+    min: 0,
+    max: 100,
+    step: 0.1,
+    unit: '%',
+  },
+  {
+    name: 'phobos',
+    querySelector: document.querySelector('#effect-phobos'),
+    filter: 'blur',
+    min: 0,
+    max: 3,
+    step: 0.1,
+    unit: 'px',
+  },
+  {
+    name: 'heat',
+    querySelector: document.querySelector('#effect-heat'),
+    filter: 'brightness',
+    min: 1,
+    max: 3,
+    step: 0.1,
+    unit: '',
+  },
+];
+
 const getPhotoId = createIdGenerator(OBJECT_COUNT);
 const getPhotoUrlId = createIdGenerator(OBJECT_COUNT);
 const getCommentId = createIdGenerator(1000);
@@ -72,4 +129,4 @@ function createPhoto(){
 
 const createPhotos = () => Array.from({length: OBJECT_COUNT}, createPhoto);
 
-export {createPhotos, createCommentsList};
+export {createPhotos, createCommentsList, EFFECTS};

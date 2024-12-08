@@ -1,3 +1,5 @@
+import { sliderContainer, imagePreview } from './changeEffects';
+
 const uploadPhotoInput = document.querySelector('.img-upload__input');
 const uploadPhotoOverlay = document.querySelector('.img-upload__overlay');
 const uploadPhotoOverlayClose = document.querySelector('.img-upload__cancel');
@@ -10,20 +12,24 @@ const uploadSubmitButton = document.querySelector('.img-upload__submit');
 uploadPhotoInput.addEventListener('change', () =>{
   uploadPhotoOverlay.classList.remove('hidden');
   document.body.classList.add('modal-open');
+
+  document.addEventListener('keydown', (evt) => {
+    if(evt.key === 'Escape' && !(document.activeElement === hashtagField || document.activeElement === descriptionField)) {
+      uploadPhotoOverlay.classList.add('hidden');
+      document.body.classList.remove('modal-open');
+      uploadPhotoInput.value = '';
+      sliderContainer.style.display = 'none';
+      imagePreview.style.filter = '';
+    }
+  });
 });
 
 uploadPhotoOverlayClose.addEventListener('click', () => {
   uploadPhotoOverlay.classList.add('hidden');
   document.body.classList.remove('modal-open');
   uploadPhotoInput.value = '';
-});
-
-document.addEventListener('keydown', (evt) => {
-  if(evt.key === 'Escape' && !(document.activeElement === hashtagField || document.activeElement === descriptionField)) {
-    uploadPhotoOverlay.classList.add('hidden');
-    document.body.classList.remove('modal-open');
-    uploadPhotoInput.value = '';
-  }
+  sliderContainer.style.display = 'none';
+  imagePreview.style.filter = '';
 });
 
 const pristine = new Pristine(uploadPhotoForm, {
