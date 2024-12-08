@@ -20,4 +20,21 @@ function createIdGenerator(max) {
 
 const getRandomArrayElement = (elements) => elements[getRandomInteger(0, elements.length - 1)];
 
-export {createIdGenerator, getRandomArrayElement, getRandomInteger};
+const REMOVE_MESSAGE_TIMEOUT = 5000;
+const errorLoadDataTemplate = document.querySelector('#data-error').content;
+
+function showErrorMessage(message) {
+  const errorArea = errorLoadDataTemplate.cloneNode(true);
+  if(message) {
+    errorArea.querySelector('.data-error__title').textContent = message;
+  }
+  document.body.append(errorArea);
+
+  const errorLoadDataArea = document.body.querySelector('.data-error');
+
+  setTimeout(()=>{
+    errorLoadDataArea.remove();
+  }, REMOVE_MESSAGE_TIMEOUT);
+}
+
+export {createIdGenerator, getRandomArrayElement, getRandomInteger, showErrorMessage};
