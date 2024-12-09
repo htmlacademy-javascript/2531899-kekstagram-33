@@ -1,13 +1,9 @@
-import { createPhotos } from './data.js';
 import { renderComments } from './renderComments.js';
 
 const miniatureTemplate = document.querySelector('#picture')
   .content
   .querySelector('.picture');
 const miniatureList = document.querySelector('.pictures');
-
-const photoFeed = createPhotos();
-
 const miniatureListFragment = document.createDocumentFragment();
 const fullPictureWindow = document.querySelector('.big-picture');
 const fullPictureWindowClose = document.querySelector('.big-picture__cancel');
@@ -33,22 +29,33 @@ function getFullPhoto(photo) {
   fullPictureWindow.querySelector('.social__caption').textContent = photo.description;
   fullPictureWindow.querySelector('.social__comment-total-count').textContent = photo.comments.length;
 
-  renderComments();
+  renderComments(photo.comments);
 }
 
-const createPhotoFeed = function(photo) {
+const createPhoto = function(photo) {
   const pictureFrame = miniatureTemplate.cloneNode(true);
   pictureFrame.querySelector('.picture__img').src = photo.url;
   pictureFrame.querySelector('.picture__img').alt = photo.description;
   pictureFrame.querySelector('.picture__likes').textContent = photo.likes;
   pictureFrame.querySelector('.picture__comments').textContent = photo.comments.length;
-  miniatureListFragment.append(pictureFrame);
 
   pictureFrame.onclick = function () {
     getFullPhoto(photo);
   };
+
+  return pictureFrame;
 };
 
-photoFeed.forEach(createPhotoFeed);
+function createPhotoFeed(photos) {
+  document.querySelectorAll('.picture').forEach((element) => element.remove());
 
-miniatureList.append(miniatureListFragment);
+  photos.forEach((element) => {
+    const createElement = createPhoto(element);
+    miniatureListFragment.appendChild(createElement);
+
+  });
+
+  miniatureList.append(miniatureListFragment);
+}
+
+export {createPhotoFeed};
