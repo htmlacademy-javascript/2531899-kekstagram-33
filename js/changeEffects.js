@@ -80,7 +80,7 @@ EFFECTS.forEach((effect) => {
         step: effect.step,
       });
 
-      sliderElement.noUiSlider.set(effect.min);
+      sliderElement.noUiSlider.set(effect.max);
       applyEffect();
       if (effect.name === 'none') {
         sliderContainer.style.display = 'none';
@@ -92,4 +92,4 @@ EFFECTS.forEach((effect) => {
 
 sliderContainer.style.display = 'none';
 
-export {sliderContainer, imagePreview};
+export {sliderContainer, imagePreview, scaleControlValue, MAX_SCALE_VALUE};
