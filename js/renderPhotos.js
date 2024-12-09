@@ -15,7 +15,6 @@ const createPhoto = (photo) => {
 
   pictureFrame.onclick = function () {
     renderFullPhoto(photo);
-    renderFullPhoto(photo);
   };
 
   return pictureFrame;
