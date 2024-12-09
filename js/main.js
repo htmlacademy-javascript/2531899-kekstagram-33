@@ -1,6 +1,4 @@
-import './renderPhotos.js';
 import './validateForms.js';
-import './changeEffects.js';
 import './uploadPhoto.js';
 import { getData } from './serverData.js';
 import { showErrorMessage, debounce } from './util.js';
