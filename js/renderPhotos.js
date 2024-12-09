@@ -52,10 +52,31 @@ function createPhotoFeed(photos) {
   photos.forEach((element) => {
     const createElement = createPhoto(element);
     miniatureListFragment.appendChild(createElement);
-
   });
 
   miniatureList.append(miniatureListFragment);
 }
 
-export {createPhotoFeed};
+let pictures = [];
+
+function onContainerClick(evt) {
+  const thumbnail = evt.target.closest('data-thumbnail-id');
+
+  if(!thumbnail) {
+    return;
+  }
+
+  evt.preventDefault();
+  const picture = pictures.find((item) => item.id === +thumbnail.dataset.thumbnailId
+  );
+
+  getFullPhoto(picture);
+}
+
+function renderGallery(currentPhotos) {
+  pictures = currentPhotos;
+  createPhotoFeed(pictures);
+  miniatureList.addEventListener('click', onContainerClick);
+}
+
+export {createPhotoFeed, renderGallery};
