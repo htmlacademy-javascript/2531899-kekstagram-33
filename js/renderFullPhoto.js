@@ -1,9 +1,39 @@
 const COMMENTS_STEP = 5;
 const fullPictureWindow = document.querySelector('.big-picture');
+const fullPictureWindowClose = document.querySelector('.big-picture__cancel');
+
 const commentSection = fullPictureWindow.querySelector('.social__comments');
 const loadButton = fullPictureWindow.querySelector('.comments-loader');
 const shownComments = fullPictureWindow.querySelector('.social__comment-shown-count');
 const totalComments = fullPictureWindow.querySelector('.social__comment-total-count');
+
+function closeModal() {
+  fullPictureWindow.classList.add('hidden');
+  document.body.classList.remove('modal-open');
+  loadButton.onclick = null;
+}
+
+fullPictureWindowClose.addEventListener('click', () => {
+  closeModal();
+});
+
+document.addEventListener('keydown', (evt) => {
+  if(evt.key === 'Escape') {
+    closeModal();
+  }
+});
+
+function renderFullPhoto(photo) {
+  fullPictureWindow.classList.remove('hidden');
+  document.body.classList.add('modal-open');
+
+  fullPictureWindow.querySelector('.big-picture__img').querySelector('img').src = photo.url;
+  fullPictureWindow.querySelector('.likes-count').textContent = photo.likes;
+  fullPictureWindow.querySelector('.social__caption').textContent = photo.description;
+  fullPictureWindow.querySelector('.social__comment-total-count').textContent = photo.comments.length;
+
+  renderComments(photo.comments);
+}
 
 function createNewComment(commentInfo) {
   const newComment = document.createElement('li');
@@ -36,10 +66,7 @@ function renderComments(comments) {
   let commentsCount = 0;
   loadComments();
 
-  loadButton.addEventListener('click', () => {
-    loadComments();
-  });
-
+  loadButton.onclick = loadComments;
   totalComments.textContent = comments.length;
 
   function loadComments() {
@@ -63,4 +90,4 @@ function renderComments(comments) {
   }
 }
 
-export {renderComments};
+export { renderFullPhoto };

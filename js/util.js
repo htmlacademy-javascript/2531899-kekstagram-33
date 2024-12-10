@@ -37,4 +37,14 @@ function showErrorMessage(message) {
   }, REMOVE_MESSAGE_TIMEOUT);
 }
 
-export {createIdGenerator, getRandomArrayElement, getRandomInteger, showErrorMessage};
+const DEBOUNCE_TIME = 500;
+
+const debounce = (callback, timeoutDelay = DEBOUNCE_TIME) => {
+  let timeoutId;
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
+};
+
+export {createIdGenerator, getRandomArrayElement, getRandomInteger, showErrorMessage, debounce};
