@@ -7,17 +7,19 @@ const loadButton = fullPictureWindow.querySelector('.comments-loader');
 const shownComments = fullPictureWindow.querySelector('.social__comment-shown-count');
 const totalComments = fullPictureWindow.querySelector('.social__comment-total-count');
 
-fullPictureWindowClose.addEventListener('click', () => {
+function closeModal() {
   fullPictureWindow.classList.add('hidden');
   document.body.classList.remove('modal-open');
   loadButton.onclick = null;
+}
+
+fullPictureWindowClose.addEventListener('click', () => {
+  closeModal();
 });
 
 document.addEventListener('keydown', (evt) => {
   if(evt.key === 'Escape') {
-    fullPictureWindow.classList.add('hidden');
-    document.body.classList.remove('modal-open');
-    loadButton.onclick = null;
+    closeModal();
   }
 });
 
