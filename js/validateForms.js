@@ -14,35 +14,15 @@ const uploadPhotoForm = document.querySelector('.img-upload__form');
 const hashtagField = document.querySelector('.text__hashtags');
 const descriptionField = document.querySelector('.text__description');
 const uploadSubmitButton = document.querySelector('.img-upload__submit');
-const defaultEffect = document.querySelector('#effect-none');
 
 const pristine = new Pristine(uploadPhotoForm, {
   classTo: 'img-upload__field-wrapper',
   errorTextParent: 'img-upload__field-wrapper',
   errorTextClass: 'img-upload__field-wrapper--error',
 });
-
-function closeOverlay() {
-  uploadPhotoOverlay.classList.add('hidden');
-  document.body.classList.remove('modal-open');
-  uploadPhotoInput.value = '';
-  sliderContainer.style.display = 'none';
-  imagePreview.style.filter = '';
-  hashtagField.value = '';
-  descriptionField.value = '';
-  scaleControlValue.value = `${MAX_SCALE_VALUE}%`;
-  defaultEffect.checked = true;
-  pristine.reset();
-}
 
 const templateSuccess = document.querySelector('#success').content;
 const templateError = document.querySelector('#error').content;
-
-const pristine = new Pristine(uploadPhotoForm, {
-  classTo: 'img-upload__field-wrapper',
-  errorTextParent: 'img-upload__field-wrapper',
-  errorTextClass: 'img-upload__field-wrapper--error',
-});
 
 let errorMessage;
 

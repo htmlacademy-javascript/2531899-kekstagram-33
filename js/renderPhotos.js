@@ -1,5 +1,4 @@
 import { renderFullPhoto } from './renderFullPhoto.js';
-import { renderFullPhoto } from './renderFullPhoto.js';
 
 const miniatureTemplate = document.querySelector('#picture')
   .content
