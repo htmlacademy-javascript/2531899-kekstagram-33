@@ -1,4 +1,5 @@
 import { renderFullPhoto } from './renderFullPhoto.js';
+import { renderFullPhoto } from './renderFullPhoto.js';
 
 const miniatureTemplate = document.querySelector('#picture')
   .content
@@ -14,6 +15,7 @@ const createPhoto = (photo) => {
   pictureFrame.querySelector('.picture__comments').textContent = photo.comments.length;
 
   pictureFrame.onclick = function () {
+    renderFullPhoto(photo);
     renderFullPhoto(photo);
   };
 
