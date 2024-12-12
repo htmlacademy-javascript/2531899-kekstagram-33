@@ -1,19 +1,30 @@
 import { EFFECTS } from './data';
-
-const imagePreview = document.querySelector('.img-upload__preview img');
-const scaleSmallerButton = document.querySelector('.scale__control--smaller');
-const scaleBiggerButton = document.querySelector('.scale__control--bigger');
-const scaleControlValue = document.querySelector('.scale__control--value');
+import { pristine, hashtagField, descriptionField } from './validateForms';
 
 const SCALE_STEP = 25;
 const MAX_SCALE_VALUE = 100;
+
+const imagePreview = document.querySelector('.img-upload__preview img');
+const uploadPhotoInput = document.querySelector('.img-upload__input');
+const uploadPhotoOverlay = document.querySelector('.img-upload__overlay');
+const uploadPhotoOverlayClose = document.querySelector('.img-upload__cancel');
+
+const sliderContainer = document.querySelector('.img-upload__effect-level');
+const scaleControlValue = document.querySelector('.scale__control--value');
+const scaleSmallerButton = document.querySelector('.scale__control--smaller');
+const scaleBiggerButton = document.querySelector('.scale__control--bigger');
+
+const sliderElement = document.querySelector('.effect-level__slider');
+const valueElement = document.querySelector('.effect-level__value');
+const defaultEffect = document.querySelector('#effect-none');
+
 let currentScaleValue = MAX_SCALE_VALUE;
 
-function updateScaleValue(newScaleValue) {
+const updateScaleValue = (newScaleValue) => {
   currentScaleValue = newScaleValue;
   scaleControlValue.value = `${currentScaleValue}%`;
   imagePreview.style.transform = `scale(${currentScaleValue / 100})`;
-}
+};
 
 scaleSmallerButton.addEventListener('click', () => {
   if (currentScaleValue > SCALE_STEP) {
@@ -27,9 +38,36 @@ scaleBiggerButton.addEventListener('click', () => {
   }
 });
 
-const sliderElement = document.querySelector('.effect-level__slider');
-const valueElement = document.querySelector('.effect-level__value');
-const sliderContainer = document.querySelector('.img-upload__effect-level');
+const closeOverlay = () => {
+  uploadPhotoOverlay.classList.add('hidden');
+  document.body.classList.remove('modal-open');
+  uploadPhotoInput.value = '';
+  sliderContainer.style.display = 'none';
+  imagePreview.style.filter = '';
+  hashtagField.value = '';
+  descriptionField.value = '';
+  scaleControlValue.value = `${MAX_SCALE_VALUE}%`;
+  currentScaleValue = MAX_SCALE_VALUE;
+  imagePreview.style.removeProperty('transform');
+  defaultEffect.checked = true;
+  pristine.reset();
+};
+
+uploadPhotoInput.addEventListener('change', () =>{
+  uploadPhotoOverlay.classList.remove('hidden');
+  document.body.classList.add('modal-open');
+
+  document.addEventListener('keydown', (evt) => {
+    if(evt.key === 'Escape' && !(document.activeElement === hashtagField || document.activeElement === descriptionField)) {
+      closeOverlay();
+    }
+  });
+});
+
+uploadPhotoOverlayClose.addEventListener('click', () => {
+  closeOverlay();
+});
+
 
 noUiSlider.create(sliderElement, {
   range: {
@@ -40,25 +78,12 @@ noUiSlider.create(sliderElement, {
   step: 1,
   connect: 'lower',
   format: {
-    to: function (value) {
-      if(Number.isInteger(value)) {
-        return value.toFixed(0);
-      }
-      return value.toFixed(1);
-    },
-    from: function (value) {
-      return parseFloat(value);
-    },
+    to: (value) => Number.isInteger(value) ? value.toFixed(0) : value.toFixed(1),
+    from: (value) => parseFloat(value),
   },
 });
 
-sliderElement.noUiSlider.on('update', () => {
-  const value = sliderElement.noUiSlider.get();
-  valueElement.value = value;
-  applyEffect();
-});
-
-function applyEffect() {
+const applyEffect = () => {
   const selectedEffect = EFFECTS.find((effect) => effect.querySelector.checked);
   if (selectedEffect) {
     const value = parseFloat(valueElement.value);
@@ -66,7 +91,13 @@ function applyEffect() {
   } else {
     imagePreview.style.filter = '';
   }
-}
+};
+
+sliderElement.noUiSlider.on('update', () => {
+  const value = sliderElement.noUiSlider.get();
+  valueElement.value = value;
+  applyEffect();
+});
 
 EFFECTS.forEach((effect) => {
   effect.querySelector.addEventListener('change', (evt) => {
@@ -80,7 +111,7 @@ EFFECTS.forEach((effect) => {
         step: effect.step,
       });
 
-      sliderElement.noUiSlider.set(effect.min);
+      sliderElement.noUiSlider.set(effect.max);
       applyEffect();
       if (effect.name === 'none') {
         sliderContainer.style.display = 'none';
@@ -92,4 +123,4 @@ EFFECTS.forEach((effect) => {
 
 sliderContainer.style.display = 'none';
 
-export {sliderContainer, imagePreview};
+export { closeOverlay };
