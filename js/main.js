@@ -5,7 +5,7 @@ import { showErrorMessage, debounce } from './util.js';
 import { renderGallery } from './renderPhotos.js';
 import { init, getFilteredPictures} from './filterPhoto.js';
 
-async function bootstrap() {
+const bootstrap = async () => {
   try {
     const photos = await getData();
     const debouncedRenderGallery = debounce(renderGallery);
@@ -14,6 +14,6 @@ async function bootstrap() {
   } catch (error) {
     showErrorMessage(error.message);
   }
-}
+};
 
 bootstrap();

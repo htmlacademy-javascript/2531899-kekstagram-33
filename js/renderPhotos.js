@@ -6,7 +6,7 @@ const miniatureTemplate = document.querySelector('#picture')
 const miniatureList = document.querySelector('.pictures');
 const miniatureListFragment = document.createDocumentFragment();
 
-const createPhoto = function(photo) {
+const createPhoto = (photo) => {
   const pictureFrame = miniatureTemplate.cloneNode(true);
   pictureFrame.querySelector('.picture__img').src = photo.url;
   pictureFrame.querySelector('.picture__img').alt = photo.description;
@@ -20,7 +20,7 @@ const createPhoto = function(photo) {
   return pictureFrame;
 };
 
-function createPhotoFeed(photos) {
+const createPhotoFeed = (photos) => {
   document.querySelectorAll('.picture').forEach((element) => element.remove());
 
   photos.forEach((element) => {
@@ -29,11 +29,11 @@ function createPhotoFeed(photos) {
   });
 
   miniatureList.append(miniatureListFragment);
-}
+};
 
 let pictures = [];
 
-function onContainerClick(evt) {
+const onContainerClick = (evt) => {
   const thumbnail = evt.target.closest('data-thumbnail-id');
 
   if(!thumbnail) {
@@ -45,12 +45,12 @@ function onContainerClick(evt) {
   );
 
   renderFullPhoto(picture);
-}
+};
 
-function renderGallery(currentPhotos) {
+const renderGallery = (currentPhotos) => {
   pictures = currentPhotos;
   createPhotoFeed(pictures);
   miniatureList.addEventListener('click', onContainerClick);
-}
+};
 
 export {createPhotoFeed, renderGallery};

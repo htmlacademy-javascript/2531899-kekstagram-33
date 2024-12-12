@@ -1,15 +1,15 @@
 const PHOTOS_COUNT = 10;
+
 const Filter = {
   DEFAULT: 'filter-default',
   DISCUSSED: 'filter-discussed',
   RANDOM: 'filter-random',
 };
-
 const filterElement = document.querySelector('.img-filters');
 let currentFilter = Filter.DEFAULT;
 let photos = [];
 
-function getFilteredPictures() {
+const getFilteredPictures = () => {
   switch (currentFilter) {
     case Filter.RANDOM:
       return [...photos].sort(() => Math.random() - 0.5).slice(0, PHOTOS_COUNT);
@@ -18,9 +18,9 @@ function getFilteredPictures() {
     default:
       return [...photos];
   }
-}
+};
 
-function setOnFilterClick(callback) {
+const setOnFilterClick = (callback) => {
   filterElement.addEventListener('click', (evt) => {
     if(!evt.target.classList.contains('img-filters__button')) {
       return;
@@ -36,12 +36,12 @@ function setOnFilterClick(callback) {
     currentFilter = clickedButton.id;
     callback(getFilteredPictures());
   });
-}
+};
 
-function init(loadedPhotos, callback) {
+const init = (loadedPhotos, callback) => {
   filterElement.classList.remove('img-filters--inactive');
   photos = [...loadedPhotos];
   setOnFilterClick(callback);
-}
+};
 
 export { init, setOnFilterClick, getFilteredPictures };

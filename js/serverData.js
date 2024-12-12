@@ -15,17 +15,13 @@ const ErrorMessageText = {
   [Method.POST]: 'Не удалось отправить данные формы, попробуйте ещё раз',
 };
 
-async function load(route, method = Method.GET, body = null) {
+const load = async (route, method = Method.GET, body = null) => {
   const response = await fetch(`${BASE_URL}${route}`, { method, body });
   return (response.ok ? await response.json() : Promise.reject({ message: ErrorMessageText[method], status: response.status }));
-}
+};
 
-async function getData() {
-  return await load(Route.GET_DATA);
-}
+const getData = async () => await load(Route.GET_DATA);
 
-async function sendData(body) {
-  return await load(Route.SEND_DATA, Method.POST, body);
-}
+const sendData = async (body) => await load(Route.SEND_DATA, Method.POST, body);
 
 export { getData, sendData };
